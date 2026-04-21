@@ -342,22 +342,15 @@ function procesarQR(raw) {
 
   fetch(APPS_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ qr: raw })
   })
-  .then(r => r.json())
-  .then(data => {
+  .then(() => {
     pausedMsg.classList.remove('visible');
-
-    if (data.ok && !data.duplicado) {
-      mostrarOk(data.mensaje, legajo, charla);
-      contador++;
-      document.getElementById('contador').textContent = contador;
-    } else if (data.duplicado) {
-      mostrarWarning(data.mensaje, legajo, charla);
-    } else {
-      mostrarError(data.mensaje);
-    }
+    mostrarOk('Registrado', legajo, charla);
+    contador++;
+    document.getElementById('contador').textContent = contador;
   })
   .catch(() => {
     pausedMsg.classList.remove('visible');
