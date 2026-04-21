@@ -273,6 +273,8 @@
 
 <div class="contador">registros: <span id="contador">0</span></div>
 
+<div id="debug" style="width:100%;max-width:480px;background:var(--surface);border-radius:10px;padding:0.85rem 1rem;font-size:0.75rem;color:var(--muted);margin-top:0.5rem;"><div style="color:var(--azul);text-transform:uppercase;font-size:0.7rem;margin-bottom:0.4rem;">debug — último QR leído</div><div id="debug-raw" style="color:var(--text);word-break:break-all;">—</div></div>
+
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_8e6zthszBrOYtv3Jx1EjP9_ukNSaQ_IPZ6q_9bREjbXGzrlAsLkS3OyfKhKrGaUGHQ/exec';
 const TOKEN_VALIDO = 'utn2025'; // cambiá esto antes de publicar
@@ -317,6 +319,9 @@ function tick() {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const img  = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+    if (code) {
+      document.getElementById("debug-raw").textContent = code.data;
+    }
     if (code && code.data !== lastQR) {
       lastQR = code.data;
       procesarQR(code.data);
